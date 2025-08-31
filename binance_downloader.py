@@ -427,9 +427,3 @@ def get_binance_dataset():
         print("[INFO] Detected potential gaps (maintenance/listing gaps). This is informational.")
         print(gaps.head(20).to_string(index=False))
     save_df(df, cfg.out_dir, cfg.file_format, cfg.interval)
-
-def run_binance_downloader():
-    get_binance_dataset()
-
-if __name__ == "__main__":
-    run_binance_downloader()
