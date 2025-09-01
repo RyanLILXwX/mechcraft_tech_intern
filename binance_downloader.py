@@ -257,7 +257,7 @@ def fetch_klines(cfg: FetchConfig) -> pd.DataFrame:
         # only print the information in terminal
         print(f"[INFO] Fetching {sym} {cfg.interval} from {start_dt.isoformat()} to {end_dt.isoformat()} ...", file=sys.stderr)
         df = fetch_symbol_klines(sym, cfg.interval, start_ms, end_ms, cfg)
-        print(f"[INFO] {sym}: fetched {len(df)} rows.", file=sys.stderr)
+        print(f"[INFO] {sym}: fetched {len(df)} rows.\n", file=sys.stderr)
         all_df.append(df)
     if (not all_df):
         return pd.DataFrame()
@@ -340,6 +340,7 @@ def save_df(df: pd.DataFrame, out_dir: str, file_format: str, interval: str):
             # Unsupported file format
             raise ValueError("file_format must be 'csv' or 'parquet'")
         print(f"[OK] Wrote {path} ({len(g)} rows)")
+    print()
 
 def parse_arguments() -> FetchConfig:
     """

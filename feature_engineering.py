@@ -14,31 +14,31 @@ def infer_freq_alias(interval: str) -> str:
         interval (str): Time interval string from the exchange or user input, such as "1m", "15min", "4h", "1d".
         
     Returns:
-        str: A pandas offset alias string (e.g., "T", "5T", "H", "D") that can be used in resampling or time series operations.
-        Default time value is set to 5T(5m).
+        str: A pandas offset alias string (e.g., "min", "5min", "h", "d") that can be used in resampling or time series operations.
+        Default time value is set to 5min.
     """
     # Mapped the normal time into time frequency symbols that pandas can recognize
     pandas_time_dict = {
-        "1m": "1min",
-        "3m": "3min",
-        "5m": "5min",
-        "15m": "15min",
-        "30m": "30min",
-        "1h": "1h",
-        "4h": "4h",
+        "1m": "1min", 
+        "3m": "3min", 
+        "5m": "5min", 
+        "15m": "15min", 
+        "30m": "30min", 
+        "1h": "1h", 
+        "4h": "4h", 
         "1d": "1d"}
     if (interval in pandas_time_dict):
         return pandas_time_dict[interval]
     # Fallback: try to parse like "5min" or "5m"
     s = interval.lower().replace("minute", "m").replace("min", "m")
     if (s.endswith("m") and s[:-1].isdigit()):
-        return f"{s[:-1]}T" # pandas offset alias
-    if s.endswith("h") and s[:-1].isdigit():
-        return f"{s[:-1]}H"
-    if s.endswith("d") and s[:-1].isdigit():
-        return f"{s[:-1]}D"
+        return f"{s[:-1]}min"
+    if (s.endswith("h") and s[:-1].isdigit()):
+        return f"{s[:-1]}h"
+    if (s.endswith("d") and s[:-1].isdigit()):
+        return f"{s[:-1]}d"
     # Default to minutes
-    return "5T"
+    return "5min"
 
 def load_and_prepare(path: str, interval: str = "5m", expected_symbol: Optional[str] = None) -> pd.DataFrame:
     """
@@ -58,8 +58,8 @@ def load_and_prepare(path: str, interval: str = "5m", expected_symbol: Optional[
     Args:
         path (str): File path to the candlestick CSV file.
         interval (str, optional): The trading interval (e.g., "1m", "5m", "1h"). Default is "5m".
-        expected_symbol (Optional[str], optional): 
-            If provided, checks that this symbol exists in the file. Raises ValueError if not found.
+        expected_symbol (Optional[str], optional): If provided, checks that this symbol exists in 
+        the file. Raises ValueError if not found.
 
     Returns:
         pd.DataFrame:
@@ -68,7 +68,7 @@ def load_and_prepare(path: str, interval: str = "5m", expected_symbol: Optional[
             - Standardized OHLCV columns with numeric dtypes.
             - DataFrame attributes:
                 - `interval`: the original interval string.
-                - `freq_alias`: the pandas frequency alias (e.g., "T", "5T", "H").
+                - `freq_alias`: the pandas frequency alias (e.g., "min", "5min", "h").
     """
     df = pd.read_csv(path)
     # Parse timestamps safely
@@ -129,7 +129,7 @@ def find_time_gaps(df: pd.DataFrame, max_allow_miss: int = 0) -> pd.DataFrame:
     """
     if ("ts" not in df):
         raise ValueError("DataFrame must contain 'ts' column. Call load_and_prepare first.")
-    freq = df.attrs.get("freq_alias", "5T")
+    freq = df.attrs.get("freq_alias", "5min")
     # Use pd.date_range to generate a complete, continuous sequence of timestamps. Start from the earliest 
     # time of the current data df["ts"].min() to the latest time df["ts"].max(), incrementing by freq 
     # and set to the UTC time zone.
@@ -142,7 +142,7 @@ def find_time_gaps(df: pd.DataFrame, max_allow_miss: int = 0) -> pd.DataFrame:
     missing = merged[merged["_present"].isna()].index
     if (len(missing) == 0):
         return pd.DataFrame(columns=["gap_start","gap_end","missing_count"]) # no gaps
-    # Derive fixed step from freq (works for fixed intervals like "T","5T","H","4H","D").
+    # Derive fixed step from freq (works for fixed intervals like "min","5min","h","4h","d").
     step = pd.Timedelta(freq)
     # Group consecutive missing timestamps into segments
     gaps = []
@@ -411,7 +411,7 @@ def add_all_features(df: pd.DataFrame, windows_cfg: Optional[WindowsConfig] = No
     """
     Build a comprehensive, clean feature set for OHLCV data. Applies a standardized pipeline to compute 
     price returns/spread, moving averages, RSI, MACD (line/signal/hist), Bollinger Bands and %B, ATR, rolling volatility of
-    log returns, and volume-based statistics. Finally, drops the leading warm-up rows implied by the 
+    log returns, and volume-based statistics. Finally, drops the leading drop_nan rows implied by the 
     largest lookback to remove NaNs and alignment artifacts.
 
     Args:
@@ -421,7 +421,7 @@ def add_all_features(df: pd.DataFrame, windows_cfg: Optional[WindowsConfig] = No
 
     Returns:
         pd.DataFrame: A copy of the DataFrame with all feature columns added and the
-        initial warm-up rows removed.
+        initial drop_nan rows removed.
     """
     cfg = windows_cfg or WindowsConfig()
     df = df.copy()

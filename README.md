@@ -24,7 +24,7 @@ This python file provides a modular pipeline to fetch, process, and prepare Bina
 
 ---
 
-## binance_downloader.py
+## Run Binance Pipeline
 
 ### Arguments
 
@@ -53,13 +53,13 @@ This python file provides a modular pipeline to fetch, process, and prepare Bina
 Run the pipeline end-to-end:
 
 ```bash
-python binance_downloader.py [OPTIONS]
+python binance_pipeline.py [OPTIONS]
 ```
 
 #### Command line used right now
 
 ```bash
-python binance_downloader.py --symbols BTCUSDT ETHUSDT BNBUSDT ADAUSDT --interval 1m --days 7 --out ./data
+python binance_pipeline.py --symbols BTCUSDT ETHUSDT BNBUSDT ADAUSDT --interval 1m --days 7 --out ./data
 ```
 
 #### Example usage
@@ -135,7 +135,3 @@ symbol, open_time, open, high,low, close,volume, close_time, quote_volume, trade
 - `User-Agent` is set to `"binance-downloader/1.0 (https://github.com/RyanLILXwX/Mechcraft-Tech.git)"`. You can replace it with your project or repo link (not mandatory).
 
 - If **Parquet** fails (missing pyarrow/fastparquet), the script falls back to CSV automatically.
-
----
-
-## feature_engineering.py

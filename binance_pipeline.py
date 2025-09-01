@@ -42,7 +42,7 @@ def run_pipeline():
             log_gaps=True)
         print(f"[OK] rows={len(df_out)}, feats={len(feature_cols)}, targets={len(target_cols)}")
         if (saved_path):
-            print(f"[Saved] {saved_path}")
+            print(f"[Saved] {saved_path}\n")
 
 if __name__ == "__main__":
     run_pipeline()
