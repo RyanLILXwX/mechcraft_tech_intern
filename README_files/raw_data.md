@@ -4,6 +4,8 @@
 
 In the Binance REST API documentation, `/api/v3/klines` returns each K-line as an array list, and the fields in it are in a fixed order.
 
+We use Binance v3 API instead of v1 because v3 is the stable, officially supported version with more features, fewer limitations, and better reliability for accurate data.
+
 Website: https://developers.binance.com/docs/derivatives/usds-margined-futures/market-data/rest-api/Kline-Candlestick-Data
 
 - Index 0 is open_time

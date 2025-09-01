@@ -38,7 +38,7 @@ This python file provides a modular pipeline to fetch, process, and prepare Bina
 
 - `--out`(PATH): Output directory for raw files. Default: `./data`.
 
-- `--format`(csv,parquet): File format. Default: `csv`.
+- `--format`(csv or parquet): File format. Default: `csv`.
 
 - `--sleep`(float): Sleep between requests (default: `0.5`).
 
@@ -104,8 +104,8 @@ python binance_pipeline.py --symbols BTCUSDT ETHUSDT BNBUSDT --interval 15m --da
 
 ### Output Files
 
-* One file per symbol.
-* Naming convention:
+- One file per symbol.
+- Naming convention:
 
   ```
   SYMBOL_INTERVAL_STARTDATE_ENDDATE.csv
@@ -123,18 +123,18 @@ Each file contains:
 symbol, open_time, open, high,low, close,volume, close_time, quote_volume, trades, taker_buy_base, taker_buy_quote
 ```
 
-* `open_time` and `close_time` are **UTC timestamps**.
-* Prices/volumes are floats; `trades` is integer.
+- `open_time` and `close_time` are **UTC timestamps**.
+- Prices/volumes are floats; `trades` is integer.
 
 ---
 
 ### Notes
 
-* Binance API limit: max **1000 candles per request**. The script auto-paginates until your `--end`.
+- Binance API limit: max **1000 candles per request**. The script auto-paginates until your `--end`.
 
-* `User-Agent` is set to `"binance-downloader/1.0 (https://github.com/RyanLIL-XwX/Mechcraft-Tech.git)"`. You can replace it with your project or repo link (not mandatory).
+- `User-Agent` is set to `"binance-downloader/1.0 (https://github.com/RyanLILXwX/Mechcraft-Tech.git)"`. You can replace it with your project or repo link (not mandatory).
 
-* If **Parquet** fails (missing pyarrow/fastparquet), the script falls back to CSV automatically.
+- If **Parquet** fails (missing pyarrow/fastparquet), the script falls back to CSV automatically.
 
 ---
 

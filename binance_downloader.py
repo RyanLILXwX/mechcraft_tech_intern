@@ -10,7 +10,7 @@ import pandas as pd # Handling tabular data and timestamps
 
 BINANCE_BASE = "https://api.binance.com" # Binance Spot API Base Domain
 KLINES_EP = "/api/v3/klines" # Spot K-line interface path
-UA = "binance-downloader/1.0 (https://github.com/RyanLIL-XwX/Mechcraft-Tech.git)" # Customize User-Agent for easier server-side identification
+UA = "binance-downloader/1.0 (https://github.com/RyanLILXwX/Mechcraft-Tech.git)" # Customize User-Agent for easier server-side identification
 DEFAULT_SYMBOLS = ["BTCUSDT", "ETHUSDT", "BNBUSDT", "ADAUSDT"] # Default transaction type list
 
 MAX_LIMIT = 1000 # The maximum number of requests returned in a single request
