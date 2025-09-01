@@ -104,7 +104,7 @@ Place `binance_downloader.py` anywhere in your project (e.g., at repo root or in
 
 ---
 
-## Notes & Tips
+## Notes
 
 - **Time zone**: All times are stored as **UTC**.
 - **Gap detection**: Printed to console for awareness (maintenance windows, listing gaps). No file output for gaps by default.

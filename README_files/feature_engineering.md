@@ -101,7 +101,7 @@ Optional but supported (recommended):
 
 ---
 
-## Troubleshooting
+## Notes
 
 - **Missing columns**: Ensure required OHLCV fields exist and are numeric where applicable.
 - **Timezone**: Timestamps are parsed as **UTC**.
