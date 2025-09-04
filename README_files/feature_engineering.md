@@ -6,6 +6,21 @@ Use the single convenience function `get_features_dataset(...)` for an **end-to-
 
 ---
 
+## Parameters
+
+- **interval**: e.g., `"1m"`, `"5m"`, `"1h"`; used for sanity/metadata.
+- **expected_symbol**: set it to assert the CSV contains the expected trading pair.
+- **horizons**: prediction steps ahead (bars); e.g., `(1, 5, 15, 30)`.
+- **task**:
+  - `"binclass"` -> `target_up_<h>` in {0,1}
+  - `"multiclass"` -> `target_cls_<h>` in {-1,0,1} (uses `thresh`)
+  - `"reg"` -> `target_ret_<h>` continuous
+- **thresh**: classification threshold for “flat” band or up/down cutoff.
+- **out_path**: file path (saves exactly there) or **directory**(auto-names from input stem).
+- **file_format**: `"csv"` or `"parquet"`.
+
+---
+
 ## Installation
 
 ### Required packages
@@ -83,21 +98,6 @@ Optional but supported (recommended):
 - `make_supervised_targets`
 - `build_features`
 - `get_features_dataset`
-
----
-
-## Parameters
-
-- **interval**: e.g., `"1m"`, `"5m"`, `"1h"`; used for sanity/metadata.
-- **expected_symbol**: set it to assert the CSV contains the expected trading pair.
-- **horizons**: prediction steps ahead (bars); e.g., `(1, 5, 15, 30)`.
-- **task**:
-  - `"binclass"` -> `target_up_<h>` in {0,1}
-  - `"multiclass"` -> `target_cls_<h>` in {-1,0,1} (uses `thresh`)
-  - `"reg"` -> `target_ret_<h>` continuous
-- **thresh**: classification threshold for “flat” band or up/down cutoff.
-- **out_path**: file path (saves exactly there) or **directory**(auto-names from input stem).
-- **file_format**: `"csv"` or `"parquet"`.
 
 ---
 
