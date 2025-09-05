@@ -58,11 +58,21 @@ python binance_pipeline.py [OPTIONS]
 
 #### Command line used right now
 
+Right now, we suggest that user can only run the pipeline with one trading pair at a time.
+
 ```bash
-python binance_pipeline.py --symbols BTCUSDT ETHUSDT BNBUSDT ADAUSDT --interval 1m --days 7 --out ./data
+python binance_pipeline.py --symbols BTCUSDT --interval 1m --days 7 --out ./data
 ```
 
-#### Example usage
+### Example usage
+
+#### Note: Multi-Symbol Dataset Usage
+
+When multiple trading pairs are merged into one dataset, the data can support:
+- Single-asset prediction: predict the future price movement of one specific symbol.
+- Cross-asset comparison: evaluate and compare model accuracy across different trading pairs.
+- Multi-asset conditioned prediction: use information from other symbols to improve forecasts for a target symbol.
+- Market-level tasks: forecast overall volatility, risk, or rank assets by expected returns.
 
 #### 1. Fetch & process last 3 days of BTC/ETH at 1m resolution
 
@@ -84,21 +94,21 @@ python binance_pipeline.py --symbols BTCUSDT ETHUSDT BNBUSDT --interval 15m --da
 
 #### 4. Fetch last 7 days of 1-minute candles** for multiple symbols:
 
-   ```bash
-   python binance_downloader.py --symbols BTCUSDT ETHUSDT BNBUSDT ADAUSDT --interval 1m --days 7 --out ./data
-   ```
+```bash
+python binance_downloader.py --symbols BTCUSDT ETHUSDT BNBUSDT ADAUSDT --interval 1m --days 7 --out ./data
+```
 
 #### 5. Fetch candles between **specific dates**:
 
-   ```bash
-   python binance_downloader.py --symbols BTCUSDT --interval 1m --start 2024-08-01 --end 2024-08-10 --out ./data --format parquet
-   ```
+```bash
+python binance_downloader.py --symbols BTCUSDT --interval 1m --start 2024-08-01 --end 2024-08-10 --out ./data --format parquet
+```
 
 #### 6. Fetch candles for the **last 12 hours**:
 
-   ```bash
-   python binance_downloader.py --symbols ETHUSDT --interval 5m --start 12h --out ./data
-   ```
+```bash
+python binance_downloader.py --symbols ETHUSDT --interval 5m --start 12h --out ./data
+```
 
 ---
 

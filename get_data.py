@@ -38,13 +38,11 @@ def load_time_index(path: Union[str, Path]) -> pd.DataFrame:
     """
     Load a single features file (CSV or Parquet) and attempt to preserve a time index.
     This helper reads a features file from disk and returns a DataFrame suitable for
-    time-series work. For CSV files, it assumes the first column is the index and
-    parses it as datetimes. For Parquet files, if a 'ts' column is present, it is
+    time-series work. For both Parquet and CSV files, if a 'ts' column is present, it is
     parsed as UTC datetimes and used as a sorted DateTimeIndex.
 
-    Raises:
-        FileNotFoundError: If the given path does not exist.
-        ValueError: If the file extension is not one of {'.csv', '.parquet', '.pq'}.
+   Args:
+        path (Union[str, Path]): Path to the features file (CSV or Parquet).
 
     Returns:
         pandas.DataFrame: The loaded features table. For CSV, the first column becomes
@@ -56,7 +54,18 @@ def load_time_index(path: Union[str, Path]) -> pd.DataFrame:
     if (not p.exists()):
         raise FileNotFoundError(f"File not found: {p}")
     if (p.suffix.lower() == ".csv"):
-        df = pd.read_csv(p, index_col=0, parse_dates=True)
+        df = pd.read_csv(p)
+        # Drop any "Unnamed: *" columns that pandas sometimes adds
+        for c in list(df.columns):
+            if (str(c).startswith("Unnamed")):
+                df = df.drop(columns=[c])
+        # Explicitly convert ts to datetime and set it as index
+        if ("ts" in df.columns):
+            try:
+                df["ts"] = pd.to_datetime(df["ts"], utc=True, errors="coerce")
+                df = df.set_index("ts").sort_index()
+            except Exception:
+                pass
     elif (p.suffix.lower() in (".parquet", ".pq")):
         df = pd.read_parquet(p)
         # If index looks like a timestamp column in data, try to make a DateTimeIndex
